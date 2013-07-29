@@ -24,12 +24,15 @@ var Row = Datagrid.Row = Backbone.View.extend({
       column:     column,
       attributes: _.isFunction(column.cellAttrs) ? column.cellAttrs(this.model) : column.cellAttrs
     };
+    var cellClassName;
     if (this.options.header || column.header) {
       options.tagName = 'th';
-    }
-    var cellClassName = column.cellClassName;
-    if (_.isFunction(cellClassName)) {
-      cellClassName = cellClassName(this.model);
+      cellClassName = column.headerCellClassName;
+    }else{
+      cellClassName = column.cellClassName;
+      if (_.isFunction(cellClassName)) {
+        cellClassName = cellClassName(this.model);
+      }
     }
     options.className = cellClassName;
 

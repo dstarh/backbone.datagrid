@@ -22,7 +22,11 @@ var Table = Datagrid.Table = ComposedView.extend({
     this.$el.append('<tbody></tbody>');
 
     if (this.collection.isEmpty()) {
-      this.$el.append(this.options.emptyMessage);
+      if(_.isFunction(this.options.emptyCallback)){
+        this.options.emptyCallback();
+      }else{
+        this.$el.append(this.options.emptyMessage);
+      } 
     } else {
       this.collection.forEach(this.renderRow, this);
     }
@@ -36,7 +40,12 @@ var Table = Datagrid.Table = ComposedView.extend({
       columns:    this.columns,
       attributes: _.isFunction(this.options.rowAttrs) ? this.options.rowAttrs(model) : this.options.rowAttrs
     };
-    var rowClassName = this.options.rowClassName;
+    var rowClassName;
+    if(this.options.evenRowClassName){
+      rowClassName = index % 2 === 0 ? this.options.evenRowClassName : this.options.oddRowClassName;
+    }else{
+      rowClassName = this.options.rowClassName;      
+    }
     if (_.isFunction(rowClassName)) {
       rowClassName = rowClassName(model);
     }
