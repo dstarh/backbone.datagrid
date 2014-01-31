@@ -29,6 +29,7 @@ var HeaderCell = Datagrid.HeaderCell = Cell.extend({
     }
 
     this.$el.html(html);
+    this.$el.attr("id", this.options.cellId);
     return this;
   },
 

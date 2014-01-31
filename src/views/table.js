@@ -7,12 +7,16 @@ var Table = Datagrid.Table = ComposedView.extend({
     this.columns    = this.options.columns;
     this.pager      = this.options.pager;
     this.sorter     = this.options.sorter;
+    this.index      = 0;
 
     this.listenTo(this.collection, 'reset', this.render);
   },
 
   render: function() {
     this.$el.empty();
+    if(this.options && this.options.attributes && this.options.attributes.tableId){
+      this.$el.attr("id", this.options.attributes.tableId);
+    }
     this.removeNestedViews();
 
     var header = new Header({columns: this.columns, sorter: this.sorter});
@@ -41,11 +45,12 @@ var Table = Datagrid.Table = ComposedView.extend({
       attributes: _.isFunction(this.options.rowAttrs) ? this.options.rowAttrs(model) : this.options.rowAttrs
     };
     var rowClassName;
-    if(this.options.evenRowClassName){
-      rowClassName = index % 2 === 0 ? this.options.evenRowClassName : this.options.oddRowClassName;
+    if(this.options.rowAttrs && this.options.rowAttrs.evenRowClassName && this.options.rowAttrs.oddRowClassName){
+      rowClassName = this.index % 2 === 0 ? this.options.rowAttrs.evenRowClassName : this.options.rowAttrs.oddRowClassName;
     }else{
       rowClassName = this.options.rowClassName;      
     }
+    this.index++;
     if (_.isFunction(rowClassName)) {
       rowClassName = rowClassName(model);
     }

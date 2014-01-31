@@ -25,9 +25,11 @@ var Row = Datagrid.Row = Backbone.View.extend({
       attributes: _.isFunction(column.cellAttrs) ? column.cellAttrs(this.model) : column.cellAttrs
     };
     var cellClassName;
+    var cellId = null;
     if (this.options.header || column.header) {
       options.tagName = 'th';
       cellClassName = column.headerCellClassName;
+      cellId = column.headerCellId;
     }else{
       cellClassName = column.cellClassName;
       if (_.isFunction(cellClassName)) {
@@ -35,7 +37,7 @@ var Row = Datagrid.Row = Backbone.View.extend({
       }
     }
     options.className = cellClassName;
-
+    options.cellId = cellId;
 
     var view = column.view || Cell;
 
